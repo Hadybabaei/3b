@@ -211,7 +211,6 @@ class UsersController {
   }
 
   private testFailure = async(req:Request,res:Response,next:NextFunction):Promise<void>=>{
-    // console.log(req.body)
   }
 }
 

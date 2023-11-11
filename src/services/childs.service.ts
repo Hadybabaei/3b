@@ -4,10 +4,13 @@ import HttpExceptions from "../utils/exceptions/http.exceptions";
 class ChildService {
   private _childModel = prisma.childs;
 
-  public createChild = async (childData: Child) => {
+  public createChild = async (fullname:string,userId:string) => {
     try {
       return await this._childModel.create({
-        data: childData,
+        data: {
+          fullname,
+          userId
+        },
       });
     } catch (err) {
       throw err;

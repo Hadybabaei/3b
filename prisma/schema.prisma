@@ -27,6 +27,8 @@ model Users {
   last_login              DateTime? // Assuming this is a timestamp of the last login
   createdAt               DateTime   @default(now()) // This adds a createdAt timestamp
   updatedAt               DateTime   @updatedAt // This adds an updatedAt timestamp
+  child                   Childs[]
+  parent                  Parents[]
 }
 
 model Childs {
@@ -41,6 +43,8 @@ model Childs {
   hospital_name           String?
   type_of_delivery        String?
   multiple_birth          String?
+  user                    Users @relation(fields: [userId], references: [uuid])
+  userId                  String @db.Uuid
   Parents ParentsOnChilds[]
 }
 
@@ -70,6 +74,8 @@ model Parents {
   drinking_quite          String?
   drinking_quite_date     DateTime?
   gender                  String?
+  user                    Users @relation(fields: [userId], references: [uuid])
+  userId                  String @db.Uuid
   posts ParentsOnChilds[]
 }
 

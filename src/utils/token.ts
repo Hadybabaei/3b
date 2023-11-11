@@ -3,7 +3,7 @@ import User from '../interfaces/user.interface';
 import Token from "../interfaces/token.interface";
 
 export const createToken = (user: User): string => {
-  return jwt.sign({ user }, process.env.JWT_SECRET as jwt.Secret, {
+  return jwt.sign(user, process.env.JWT_SECRET as jwt.Secret, {
     expiresIn: '1d',
   });
 };

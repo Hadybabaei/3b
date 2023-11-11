@@ -1,3 +1,5 @@
+import { NextFunction, Response,Request } from "express";
+
 export interface ParentInterface {
   id: number;
   fullname: string;
@@ -15,13 +17,18 @@ export interface ParentInterface {
   number_of_miscarriage: number|null;
   first_miscarriage_date: Date|null;
   second_miscarriage_date: Date|null;
-  ever_smoked: Boolean|null;
-  is_smooking: Boolean|null;
+  ever_smoked: boolean|null;
+  is_smooking: boolean|null;
   smoking_quite: string|null;
   smoking_quite_date: Date|null;
-  ever_drunk: Boolean|null;
-  is_drinking: Boolean|null;
+  ever_drunk: boolean|null;
+  is_drinking: boolean|null;
   drinking_quite: string|null;
   drinking_quite_date: Date|null;
   gender: string|null;
+}
+export interface ParentClass {
+  createParent(req:Request,res:Response,next:NextFunction):Promise<Response|void>;
+  editParent(req:Request,res:Response,next:NextFunction):Promise<Response|void>;
+  deleteParent(req:Request,res:Response,next:NextFunction):Promise<Response|void>;
 }
