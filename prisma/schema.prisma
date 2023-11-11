@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  uuid                    String             @id @default(uuid()) @db.Uuid
+  first_name              String?
+  googleId                String?        @unique
+  last_name               String?
+  middle_name             String?
+  email                   String?    @unique
+  password                String?
+  name                    String?
+  role                    String     @default("user")
+  verification_code       String?
+  verified_status         Boolean?   @default(false)
+  phone_verified_status   Boolean?   @default(false)
+  verification_expire_time DateTime?
+  country                 String?
+  country_tag             String?
+  phone_number            String?    @unique
+  last_login              DateTime? // Assuming this is a timestamp of the last login
+  createdAt               DateTime   @default(now()) // This adds a createdAt timestamp
+  updatedAt               DateTime   @updatedAt // This adds an updatedAt timestamp
+}
+
+model Childs {
+  id                      Int                 @id @default(autoincrement())
+  fullname                String
+  birth_date              DateTime?
+  gender                  String?
+  birth_weight            String?
+  birth_country           String?
+  birth_city              String?
+  birth_place             String?
+  hospital_name           String?
+  type_of_delivery        String?
+  multiple_birth          String?
+  Parents ParentsOnChilds[]
+}
+
+model Parents {
+  id                      Int                 @id @default(autoincrement())
+  fullname                String
+  type_of_relationship    String
+  birth_date              DateTime?
+  weight                  String?
+  birth_country           String?
+  birth_city              String?
+  height                  String?
+  education               String?
+  work_or_not             Boolean?
+  planing_on_working      Boolean?
+  occupation              String?
+  number_of_pregnancy     Int?
+  number_of_miscarriage   Int?
+  first_miscarriage_date  DateTime?
+  second_miscarriage_date DateTime?
+  ever_smoked             Boolean?
+  is_smooking             Boolean?
+  smoking_quite           String?
+  smoking_quite_date      DateTime?
+  ever_drunk              Boolean?
+  is_drinking             Boolean?
+  drinking_quite          String?
+  drinking_quite_date     DateTime?
+  gender                  String?
+  posts ParentsOnChilds[]
+}
+
+model ParentsOnChilds {
+  child                   Childs     @relation(fields: [childId], references: [id])
+  childId                 Int 
+  parent                  Parents @relation(fields: [parentId], references: [id])
+  parentId                Int 
+  assignedAt              DateTime @default(now())
+  assignedBy              String
+
+  @@id([childId, parentId])
+}
