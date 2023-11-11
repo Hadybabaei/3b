@@ -4,7 +4,6 @@ import HttpExceptions from "../utils/exceptions/http.exceptions";
 import smtpService from "../common/nodeMailer";
 import MailSender from "../interfaces/mailSender.interface";
 import Sms from "../interfaces/smsSender.interface";
-// import smsSender from "../common/smsSender";
 import prisma from "../utils/database/prismaclient";
 import compare from "../common/bcryptCompare";
 
@@ -30,7 +29,7 @@ class UsersService {
       const token = createToken(createdUser);
       return token;
     } catch (error: unknown) {
-      throw error; // Re-throw the caught HttpExceptions instance
+      throw error; 
     }
   };
 

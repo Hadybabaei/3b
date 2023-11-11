@@ -22,8 +22,13 @@ class ParentController implements ParentClass {
       validationMiddleware(parentsDto.createParent),
       this.createParent
     );
-    this.router.put(this.path,isLogged,validationMiddleware(parentsDto.editParent),this.editParent)
-    this.router.delete(`${this.path}/:id`,isLogged,this.deleteParent)
+    this.router.put(
+      this.path,
+      isLogged,
+      validationMiddleware(parentsDto.editParent),
+      this.editParent
+    );
+    this.router.delete(`${this.path}/:id`, isLogged, this.deleteParent);
   };
 
   async createParent(
