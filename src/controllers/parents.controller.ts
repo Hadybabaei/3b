@@ -44,24 +44,22 @@ class ParentController implements ParentClass {
         type_of_relationship,
         (req.user as Users).uuid
       );
-      res
-        .status(201)
-        .json({
-          Message: "Parent Created Successfully",
-          Success: true,
-          parent: newParent,
-        });
+      res.status(201).json({
+        Message: "Parent Created Successfully",
+        Success: true,
+        parent: newParent,
+      });
     } catch (err) {
       console.log(err);
       return next(err);
     }
   };
 
-  editParent = async(
+  editParent = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void | Response> =>{
+  ): Promise<void | Response> => {
     try {
       const editedParent = await this._parentService.editParent(req.body);
       res
@@ -70,13 +68,13 @@ class ParentController implements ParentClass {
     } catch (err) {
       return next(err);
     }
-  }
+  };
 
-  deleteParent= async(
+  deleteParent = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void | Response> =>{
+  ): Promise<void | Response> => {
     try {
       const deletedParent = await this._parentService.deleteParent(
         Number(req.params.id)
@@ -87,7 +85,7 @@ class ParentController implements ParentClass {
     } catch (err) {
       return next(err);
     }
-  }
+  };
 }
 
 export default ParentController;
