@@ -1,4 +1,4 @@
-import UsersInterface from "../interfaces/user.interface";
+import { Users } from "../interfaces/user.interface";
 import { createToken } from "../utils/token";
 import HttpExceptions from "../utils/exceptions/http.exceptions";
 import smtpService from "../common/nodeMailer";
@@ -9,8 +9,8 @@ import compare from "../common/bcryptCompare";
 
 class UsersService {
   private _userModel = prisma.users;
-
-  public registerByEmail = async (data: UsersInterface) => {
+  
+  public registerByEmail = async (data: Users) => {
     try {
       const users = await this._userModel.findFirst({
         where: { email: data.email },
@@ -29,11 +29,11 @@ class UsersService {
       const token = createToken(createdUser);
       return token;
     } catch (error: unknown) {
-      throw error; 
+      throw error;
     }
   };
 
-  public registerByPhoneNumber = async (data: UsersInterface) => {
+  public registerByPhoneNumber = async (data: Users) => {
     try {
       const users = await this._userModel.findUnique({
         where: {
@@ -90,12 +90,14 @@ class UsersService {
 
   public getUserByEmail = async (
     email: any
-  ): Promise<UsersInterface | null> => {
+  ): Promise<Users | null> => {
     try {
-      const user = await this._userModel.findUnique({ where: { email:email! } });
+      const user = await this._userModel.findUnique({
+        where: { email: email! },
+      });
       return user;
     } catch (err: any) {
-      console.log(err)
+      console.log(err);
       throw new Error("Internal Server Error");
     }
   };
@@ -127,7 +129,7 @@ class UsersService {
     }
   };
 
-  public getAllUsers = async (): Promise<UsersInterface[]> => {
+  public getAllUsers = async (): Promise<Users[]> => {
     try {
       const users = await this._userModel.findMany();
       return users;
@@ -136,9 +138,9 @@ class UsersService {
     }
   };
 
-  public login = async (data: UsersInterface): Promise<string | undefined> => {
+  public login = async (data: Users): Promise<string | undefined> => {
     try {
-      const user: UsersInterface | null = data.email
+      const user: Users | null = data.email
         ? await this._userModel.findUnique({
             where: { email: data.email },
           })
@@ -153,8 +155,7 @@ class UsersService {
         );
       }
 
-      const comparePassword = await compare(data.password!,user.password!)
-
+      const comparePassword = await compare(data.password!, user.password!);
 
       if (comparePassword) {
         const token = createToken(user);
@@ -173,45 +174,52 @@ class UsersService {
     }
   };
 
-  public googleAuthRegister = async(data:any)=>{
+  public googleAuthRegister = async (data: any) => {
     try {
       // console.log(data)
-      const user = await this._userModel.findFirst({where:{email:data.email}});
+      const user = await this._userModel.findFirst({
+        where: { email: data.email },
+      });
       let token;
-      if (user){
+      if (user) {
         token = createToken(user);
-      }else{
+      } else {
         const newUser = await this._userModel.create({
-          data
+          data,
         });
-        token = createToken (newUser)
+        token = createToken(newUser);
       }
       return token;
     } catch (error: unknown) {
-      console.log(error)
+      console.log(error);
       throw error; // Re-throw the caught HttpExceptions instance
     }
-  }
-  
-  public editUserInfo = async(data:UsersInterface)=>{
-    try{
-      const user = await this._userModel.findUnique({where:{email:data.email!}})
-      if (user){
-        return await this._userModel.update({where:{email:data.email as string},data:{
-          first_name:data.first_name,
-          last_name:data.last_name,
-          phone_number:data.phone_number,
-          middle_name:data.middle_name,
-          country:data.country,
-          country_tag:data.country_tag
-        }})
-      }else{
+  };
+
+  public editUserInfo = async (data: Users) => {
+    try {
+      const user = await this._userModel.findUnique({
+        where: { email: data.email! },
+      });
+      if (user) {
+        return await this._userModel.update({
+          where: { email: data.email as string },
+          data: {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            phone_number: data.phone_number,
+            middle_name: data.middle_name,
+            country: data.country,
+            country_tag: data.country_tag,
+          },
+        });
+      } else {
         throw new HttpExceptions(404, "User Not Found");
       }
-    }catch(err:any){
-      throw err
+    } catch (err: any) {
+      throw err;
     }
-  }
+  };
 }
 
 export default UsersService;

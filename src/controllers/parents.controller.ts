@@ -1,13 +1,13 @@
 import parentsDto from "../dto/parents.dto";
 import { Request, Response, NextFunction, Router } from "express";
 import validationMiddleware from "../middlewares/validation.middleware";
-import { ParentClass } from "../interfaces/parent.interface";
-import Users from "../interfaces/user.interface";
+import { ParentClass, ParentInterface } from "../interfaces/parent.interface";
+import { Users } from "../interfaces/user.interface";
 import isLogged from "../middlewares/authentication.middleware";
 import ParentService from "../services/parents.service";
 
 class ParentController implements ParentClass {
-  public path = "/parents";
+  public path = "/parent";
   public router = Router();
   private _parentService = new ParentService();
 
@@ -31,31 +31,37 @@ class ParentController implements ParentClass {
     this.router.delete(`${this.path}/:id`, isLogged, this.deleteParent);
   };
 
-  async createParent(
+  createParent = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void | Response> {
+  ): Promise<void | Response> => {
     try {
       const { fullname, type_of_relationship } = req.body;
-      const newChild = await this._parentService.createParent(
+
+      const newParent = await this._parentService.createParent(
         fullname,
         type_of_relationship,
         (req.user as Users).uuid
       );
       res
         .status(201)
-        .json({ Message: "Parent Created Successfully", Success: true });
+        .json({
+          Message: "Parent Created Successfully",
+          Success: true,
+          parent: newParent,
+        });
     } catch (err) {
+      console.log(err);
       return next(err);
     }
-  }
+  };
 
-  async editParent(
+  editParent = async(
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void | Response> {
+  ): Promise<void | Response> =>{
     try {
       const editedParent = await this._parentService.editParent(req.body);
       res
@@ -66,11 +72,11 @@ class ParentController implements ParentClass {
     }
   }
 
-  async deleteParent(
+  deleteParent= async(
     req: Request,
     res: Response,
     next: NextFunction
-  ): Promise<void | Response> {
+  ): Promise<void | Response> =>{
     try {
       const deletedParent = await this._parentService.deleteParent(
         Number(req.params.id)

@@ -6,9 +6,11 @@ import HttpExceptions from "../utils/exceptions/http.exceptions";
 import hashMaker from "../common/bcryptHasher";
 import isLogged from "../middlewares/authentication.middleware";
 import passport from "passport";
+import { Authentication } from "../interfaces/user.interface";
 require("../utils/passport.conf");
 
-class UsersController {
+class UsersController implements Authentication{
+  
   private _userService = new UsersService();
   public router = Router();
   public path = "/users";
@@ -62,7 +64,7 @@ class UsersController {
 
   }
 
-  private registerByEmail = async (
+  public registerByEmail = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -90,7 +92,7 @@ class UsersController {
     }
   };
 
-  private emailVerification = async (
+  public emailVerification = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -109,7 +111,7 @@ class UsersController {
     }
   };
 
-  private registerByPhoneNumber = async (
+  public registerByPhoneNumber = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -135,7 +137,7 @@ class UsersController {
     }
   };
 
-  private resendVerification = async (
+  public resendVerification = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -157,7 +159,7 @@ class UsersController {
     }
   };
 
-  private getAllUsers = async (
+  public getAllUsers = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -170,7 +172,7 @@ class UsersController {
     }
   };
 
-  private login = async (
+  public login = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -187,7 +189,7 @@ class UsersController {
     }
   };
 
-  private googleAuth = async (
+  public googleAuth = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -201,7 +203,7 @@ class UsersController {
     }
   };
 
-  private editUserInfo = async(req:Request,res:Response,next:NextFunction):Promise<Response|void>=>{
+  public editUserInfo = async(req:Request,res:Response,next:NextFunction):Promise<Response|void>=>{
     try{
       const editedUser = await this._userService.editUserInfo(req.body);
       res.status(200).json({Message:"User Edited Successfuly",Succes:true})
@@ -210,7 +212,7 @@ class UsersController {
     }
   }
 
-  private testFailure = async(req:Request,res:Response,next:NextFunction):Promise<void>=>{
+  public testFailure = async(req:Request,res:Response,next:NextFunction):Promise<void>=>{
   }
 }
 

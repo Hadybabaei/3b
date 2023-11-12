@@ -45,7 +45,7 @@ class App {
             this.express.use('/api/', controller.router);
         });
     }
-
+ 
     private initialiseErrorHandling(): void {
         this.express.use(ErrorMiddleware);
     }

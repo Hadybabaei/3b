@@ -4,7 +4,7 @@ import { Router } from "express";
 import isLogged from "../middlewares/authentication.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import childsDto from "../dto/childs.dto";
-import Users from "../interfaces/user.interface";
+import {Users} from "../interfaces/user.interface";
 import { ChildClass } from "interfaces/child.interface";
 
 class ChildsController implements ChildClass{
@@ -29,7 +29,7 @@ class ChildsController implements ChildClass{
   ): Promise<Response | void> => {
     try{
         const newChild = await this._childService.createChild(req.body.fullname,(req.user as Users).uuid);
-        res.status(201).json({Message:"New Child Created Successfuly",Success:true})
+        res.status(201).json({Message:"New Child Created Successfuly",Success:true,child:newChild})
     }catch(err){
         return next(err)
     }
