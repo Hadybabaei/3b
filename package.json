@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@types/express-session": "^1.17.9",
-    "@types/passport": "^1.0.12",
+    "@types/passport": "^1.0.14",
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/passport-jwt": "^3.0.11",
     "bcrypt": "^5.1.0",
